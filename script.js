@@ -15,6 +15,8 @@ function divide(num1, num2){
 }
 
 function operate(operator, num1, num2){
+    num1 = Number(num1)
+    num2 = Number(num2)
     if(operator === "+"){
         return add(num1, num2)
     }else if(operator === "-"){
@@ -30,18 +32,39 @@ const selectDisplay = document.querySelector(".display")
 const addPara = document.createElement("p")
 selectDisplay.appendChild(addPara)
 
-addPara.textContent = "123"
-let num1 = 5
-let num2 = 5
-let operator = "*"
+addPara.textContent = ""
+let num1 = null
+let num2 = null
+let operator = null
+let index = null
 
-const selectButtons = document.querySelectorAll("button")
+const selectNumbers = document.querySelectorAll(".number")
+const selectOperators = document.querySelectorAll(".operator")
+const selectClear = document.querySelector(".clear")
 
-selectButtons.forEach( (button) =>{
+selectClear.addEventListener("click", ()=>{
+    addPara.textContent = ""
+})
+
+selectNumbers.forEach( (button) =>{
     button.addEventListener("click", ()=>{
         addPara.textContent += button.textContent.trim()
+    })
+})
+
+selectOperators.forEach( (button) =>{
+    button.addEventListener("click", ()=>{
+        if(num1 === null) num1 = addPara.textContent.trim()
+        if(operator === null) operator = button.textContent.trim()
+        if(index === null) index = addPara.textContent.length + 1
+        addPara.textContent += button.textContent.trim()
         if(addPara.textContent.slice(-1) === "="){
+            let num2 = addPara.textContent.slice(index, -1).trim()
             addPara.textContent = operate(operator, num1, num2)
+            num1 = null
+            num2 = null
+            operator = null
+            index = null
         }
     })
 })
