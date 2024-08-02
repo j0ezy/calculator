@@ -41,9 +41,14 @@ let index = null
 const selectNumbers = document.querySelectorAll(".number")
 const selectOperators = document.querySelectorAll(".operator")
 const selectClear = document.querySelector(".clear")
+const selectEquals = document.querySelector(".equals")
 
 selectClear.addEventListener("click", ()=>{
     addPara.textContent = ""
+    num1 = null
+    num2 = null
+    operator = null
+    index = null
 })
 
 selectNumbers.forEach( (button) =>{
@@ -58,13 +63,18 @@ selectOperators.forEach( (button) =>{
         if(operator === null) operator = button.textContent.trim()
         if(index === null) index = addPara.textContent.length + 1
         addPara.textContent += button.textContent.trim()
-        if(addPara.textContent.slice(-1) === "="){
-            let num2 = addPara.textContent.slice(index, -1).trim()
-            addPara.textContent = operate(operator, num1, num2)
-            num1 = null
-            num2 = null
-            operator = null
-            index = null
-        }
+        selectOperators.forEach((button) => button.setAttribute("disabled", ""))
     })
 })
+
+selectEquals.addEventListener("click", ()=>{
+    let num2 = addPara.textContent.slice(index).trim()
+    addPara.textContent = operate(operator, num1, num2)
+    selectOperators.forEach((button) => button.removeAttribute("disabled"))
+    num1 = null
+    num2 = null
+    operator = null
+    index = null
+})
+
+
